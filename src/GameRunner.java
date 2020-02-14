@@ -11,6 +11,7 @@ public class GameRunner {
 	public GameRunner() {
 		frame =  new JFrame();
 		panel = new GamePanel(1200, 800);
+		frame.addKeyListener(panel);
 	}
 	
 	void setup() {
@@ -27,6 +28,7 @@ public class GameRunner {
 	
 	public static void main(String[] args) {
 		  GameRunner runner = new GameRunner();
+		  
 		  runner.setup();
 	}
 }
