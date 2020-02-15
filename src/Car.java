@@ -13,7 +13,7 @@ public class Car extends GameObject{
 	
 	public void draw(Graphics g) {
 		
-		if(skin == 1) {
+		if(skin == 1 || skin == 0) {
 			g.setColor(Color.GREEN);
 			g.fillRect(x, y, width, height);
 		}

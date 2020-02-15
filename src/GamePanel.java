@@ -13,6 +13,9 @@ import javax.swing.Timer;
 public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	
 	Timer frameDraw;
+	Timer obSpawn;
+	Timer coinSpawn;
+	
 	private BufferedImage background;
 	private BufferedImage startScreen;
 	public static BufferedImage image;	
@@ -34,9 +37,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
     final int END = 2;
     
     //Car version variable
-    int carSkin = 1;
-    
+    int carSkin = 0;
     Car car = new Car(500, 500, 200, 400, carSkin);
+    int lane = 2;
+    
+    ObjectManager manager = new ObjectManager(car);
     
     int currentState = START;
 	
@@ -74,6 +79,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	}
 	void updateGameState() {
 		moveBackground();
+		manager.update();
+		if(!car.isActive) {
+			currentState = END;
+		}
 		
 	}
 	void updateEndState()  {
@@ -83,8 +92,14 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	//Drawing states
 	
 	void drawStartState(Graphics g) {
-		if(carSkin == 2) {
+		if(carSkin == 1) {
 			g.drawImage(start1,0, 0, 1200, 800, null);
+		}
+		else if(carSkin == 2) {
+			g.drawImage(start2,0, 0, 1200, 800, null);
+		}
+		else if(carSkin == 3) {
+			g.drawImage(start3, 0, 0, 1200, 800, null);
 		}
 		else {
 			g.drawImage(startScreen,0, 0, 1200, 800, null);
@@ -95,7 +110,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		g.drawImage(background,0, 0, WIDTH, HEIGHT, 0, y1, WIDTH, y2,
 				this);
 		car.skin = carSkin;
-		car.draw(g);
+		manager.draw(g);
 	}
 	
 	void drawEndState(Graphics g)  {
@@ -131,6 +146,16 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		repaint();
 	
 	}
+	
+	
+	void startGame() {
+		obSpawn = new Timer(2000, manager);
+		obSpawn.start();
+		
+		coinSpawn = new Timer(1000 , manager);
+		coinSpawn.start();
+	}
+	
 
 	//Checking actions
 	@Override
@@ -178,6 +203,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 				}
 				if(e.getKeyCode()==KeyEvent.VK_3) {
 					carSkin = 3;
+					repaint();
 				}
 			}
 
@@ -189,9 +215,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 
 			if(currentState == START) {
 				currentState = GAME;
+				startGame();
 			}
 			else if(currentState == GAME) {
 				currentState = END;
+				obSpawn.stop();
 				repaint();
 			}
 			else if (currentState == END) {
@@ -203,10 +231,27 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		//LEFT and RIGHT controls
 		if (e.getKeyCode()==KeyEvent.VK_LEFT) {
 		    System.out.println("LEFT");
+		    if(lane == 3) {
+		    	car.x = 500;
+		    	lane = 2;
+		    }
+		    else if (lane == 2) {
+		    	car.x = 200;
+		    	lane = 1;
+		    }
 		}
 		//LEFT and RIGHT controls
 		if (e.getKeyCode()==KeyEvent.VK_RIGHT) {
 		    System.out.println("RIGHT");
+		    if(lane == 1) {
+		    	car.x = 500;
+		    	lane = 2;
+		    }
+		    else if (lane == 2) {
+		    	car.x = 820;
+		    	lane = 3;
+		    }
+		    
 		}
 		
 		
