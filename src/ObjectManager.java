@@ -9,19 +9,22 @@ public class ObjectManager implements ActionListener{
 	ArrayList<Obstacle> obs = new ArrayList<Obstacle>();
 	ArrayList<Coin> coins = new ArrayList<Coin>();
 	Random rand = new Random();
+	Random rand2 = new Random();
+	int randomNum;
+	int randomNum2;
 	
 	public ObjectManager(Car car) {
 		this.car = car;
 	}
 	
-	public void addObstacle(){
-		obs.add(new Obstacle(rand.nextInt(GameRunner.WIDTH),0,100,100));
+	public void addObstacle(int lane){
+		obs.add(new Obstacle(lane, 1,0,100,100));
+		
 
 	}
 	
-	public void addCoin(){
-		coins.add(new Coin(rand.nextInt(GameRunner.WIDTH),0,100,100));
-
+	public void addCoin(int lane){
+			Coin newCoin = new Coin(lane, 0,0,100,100);
 	}
 	
 	public void update() {
@@ -43,6 +46,7 @@ public class ObjectManager implements ActionListener{
 	
 	public void draw(Graphics g) {
 		car.draw(g);
+		System.out.println(coins.size());
 		for(Obstacle ob: obs) {
 			ob.draw(g);
 		}
@@ -67,12 +71,14 @@ public class ObjectManager implements ActionListener{
 	public void checkCollision() {
 		for(Obstacle ob: obs) {
 			if(car.collisionBox.intersects(ob.collisionBox)){
+				
 				car.isActive = false;
 			}
 		}
 		for(Coin coin: coins) {
 			if(coin.collisionBox.intersects(car.collisionBox)) {
 				coin.isActive = false;
+				System.out.println("Collides");
 			}
 		}
 	}
@@ -80,8 +86,13 @@ public class ObjectManager implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		addObstacle();
-		addCoin();
+		randomNum = rand.nextInt(3);
+		addObstacle(randomNum);
+		randomNum2 = rand2.nextInt(3);
+		if(randomNum != randomNum2) {
+			System.out.println("creating coin");
+		addCoin(randomNum2);
+		}
 	}
 	
 	

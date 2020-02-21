@@ -5,31 +5,33 @@ import java.util.Random;
 public class Coin extends GameObject{
 	
 	int speed = 10;
-	int rand = new Random().nextInt(3);
-	int y = -100;
 	
-	
-	public Coin(int x, int y, int width, int height) {
-		super(x, y, width, height);
+	public Coin(int lane, int x, int y, int width, int height) {
+		super(lane, x, y, width, height);
+		y = -100;
 		// TODO Auto-generated constructor stub
 	}
 
 	public void update() {
 		y += speed;
+		System.out.println("Updating");
 		super.update();
 	}
 	
 	public void draw(Graphics g) {
         g.setColor(Color.YELLOW);
-        if(rand == 2) {
-        	g.fillRect(840, y, width, height);
+        if(lane == 2) {
+        	x = 840;
         }
-        else if(rand == 1) {
-        	g.fillRect(550, y, width, height);
+        else if(lane == 1) {
+        	x = 550;
         }
         else {
-        	g.fillRect(200, y, width, height);
+        	x = 200;
         }
+        //g.drawRect(x,  y,  width,  height);
+		g.setColor(Color.BLUE);
+		g.fillRect(collisionBox.x, collisionBox.y, width, height);
 	}
 	
 	

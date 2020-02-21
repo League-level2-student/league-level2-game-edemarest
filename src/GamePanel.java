@@ -38,7 +38,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
     
     //Car version variable
     int carSkin = 0;
-    Car car = new Car(500, 500, 200, 400, carSkin);
+    Car car = new Car(0, 500, 500, 200, 400, carSkin);
     int lane = 2;
     
     ObjectManager manager = new ObjectManager(car);
@@ -234,11 +234,13 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		    if(lane == 3) {
 		    	car.x = 500;
 		    	lane = 2;
+		    	
 		    }
 		    else if (lane == 2) {
 		    	car.x = 200;
 		    	lane = 1;
 		    }
+		    car.update();
 		}
 		//LEFT and RIGHT controls
 		if (e.getKeyCode()==KeyEvent.VK_RIGHT) {
@@ -251,7 +253,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		    	car.x = 820;
 		    	lane = 3;
 		    }
-		    
+		    car.update();
 		}
 		
 		

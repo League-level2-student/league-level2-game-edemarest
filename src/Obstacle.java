@@ -6,12 +6,12 @@ public class Obstacle extends GameObject{
 	
 	int speed = 10;
 	int rand = new Random().nextInt(3);
-	int y = -100;
 	
 	
-	public Obstacle(int x, int y, int width, int height) {
-		super(x, y, width, height);
+	public Obstacle(int lane, int x, int y, int width, int height) {
+		super(lane, x, y, width, height);
 		// TODO Auto-generated constructor stub
+		y = -100;
 	}
 
 	public void update() {
@@ -21,15 +21,19 @@ public class Obstacle extends GameObject{
 	
 	public void draw(Graphics g) {
         g.setColor(Color.RED);
-        if(rand == 2) {
-        	g.fillRect(840, y, width, height);
+        if(lane == 2) {
+        	x = 840;
         }
-        else if(rand == 1) {
-        	g.fillRect(550, y, width, height);
+        else if(lane == 1) {
+        	x = 540;
         }
         else {
-        	g.fillRect(200, y, width, height);
+        	x = 200;
         }
+        g.fillRect(x, y, width, height);
+        //g.setColor(Color.BLACK);
+        //g.drawRect(collisionBox.x, collisionBox.y, width, height);
+        
 	}
 	
 	

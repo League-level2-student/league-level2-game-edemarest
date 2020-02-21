@@ -5,8 +5,8 @@ public class Car extends GameObject{
 
 	int skin; 
 	
-	public Car(int x, int y, int width, int height, int skin) {
-		super(x, y, width, height);
+	public Car(int lane, int x, int y, int width, int height, int skin) {
+		super(lane, x, y, width, height);
 		this.skin = skin;
 		// TODO Auto-generated constructor stub
 	}
@@ -26,7 +26,8 @@ public class Car extends GameObject{
 			g.setColor(Color.BLUE);
 			g.fillRect(x, y, width, height);
 		}
-		
+		g.setColor(Color.BLACK);
+		g.drawRect(collisionBox.x, collisionBox.y, width, height);
 	}
 	
 	
