@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -25,12 +26,12 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	BufferedImage start2;
 	BufferedImage start3;
 	
-	private int scrollSpeed = 10;
+	int scrollSpeed = 10;
 	int HEIGHT = GameRunner.HEIGHT;
 	int WIDTH = GameRunner.WIDTH;
 	int y1 = 7200-HEIGHT;
 	int y2 = 7200;
-	
+	static Font titleFont;
 	//Game state variables
     final int START = 0;
     final int GAME = 1;
@@ -38,7 +39,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
     
     //Car version variable
     int carSkin = 0;
-    Car car = new Car(0, 500, 500, 200, 400, carSkin);
+    Car car = new Car(0, 500, 500, 200, 400, carSkin, 10);
     int lane = 2;
     
     ObjectManager manager = new ObjectManager(car);
@@ -49,7 +50,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 
 		frameDraw = new Timer(1000/60,this);
 	    frameDraw.start();
-	    
+    	titleFont = new Font("Arial", Font.PLAIN, 50);
 
 	        startScreen = loadImage ("Start Screen.png");
 	    
@@ -110,7 +111,13 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		g.drawImage(background,0, 0, WIDTH, HEIGHT, 0, y1, WIDTH, y2,
 				this);
 		car.skin = carSkin;
+    	g.setColor(Color.pink);
+    	g.setFont(titleFont);
+    	g.fillRect(GameRunner.WIDTH-300, 0, 320, 70);
+    	g.setColor(Color.white);
+		g.drawString("Score: "+manager.getScore(), GameRunner.WIDTH-250, 50);
 		manager.draw(g);
+		
 	}
 	
 	void drawEndState(Graphics g)  {
@@ -138,21 +145,23 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		if (y1 <= 0){ 
 			y1 = (7200 - HEIGHT);
 			y2 = 7200; 
+			System.out.println("End of image");
 		}
 		
 		else {
 			y1 -= scrollSpeed;
 			y2 -= scrollSpeed; }
 		repaint();
+		
 	
 	}
 	
 	
 	void startGame() {
-		obSpawn = new Timer(2000, manager);
+		obSpawn = new Timer(2500, manager);
 		obSpawn.start();
 		
-		coinSpawn = new Timer(1000 , manager);
+		coinSpawn = new Timer(1250 , manager);
 		coinSpawn.start();
 	}
 	
@@ -161,7 +170,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		
 		if(currentState == START){
 		    updateStartState();
 		}else if(currentState == GAME){
@@ -211,7 +219,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		
 		//ENTER control
 		if(e.getKeyCode()==KeyEvent.VK_S) {
-			System.out.println(currentState);
 
 			if(currentState == START) {
 				currentState = GAME;
@@ -230,21 +237,19 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		
 		//LEFT and RIGHT controls
 		if (e.getKeyCode()==KeyEvent.VK_LEFT) {
-		    System.out.println("LEFT");
 		    if(lane == 3) {
 		    	car.x = 500;
 		    	lane = 2;
 		    	
 		    }
 		    else if (lane == 2) {
-		    	car.x = 200;
+		    	car.x = 180;
 		    	lane = 1;
 		    }
 		    car.update();
 		}
 		//LEFT and RIGHT controls
 		if (e.getKeyCode()==KeyEvent.VK_RIGHT) {
-		    System.out.println("RIGHT");
 		    if(lane == 1) {
 		    	car.x = 500;
 		    	lane = 2;
@@ -271,11 +276,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	
 	//method to load images
 		BufferedImage loadImage(String imageFile) {
-			System.out.println("Loading image...");
 			BufferedImage image=null;
 		        try {
 		            image = ImageIO.read(this.getClass().getResourceAsStream(imageFile));
-			    System.out.println("Got Image");
 		        } catch (Exception e) {
 		            
 		        }

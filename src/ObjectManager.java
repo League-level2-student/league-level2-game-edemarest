@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,19 +13,20 @@ public class ObjectManager implements ActionListener{
 	Random rand2 = new Random();
 	int randomNum;
 	int randomNum2;
+	int score;
 	
 	public ObjectManager(Car car) {
 		this.car = car;
 	}
 	
 	public void addObstacle(int lane){
-		obs.add(new Obstacle(lane, 1,0,100,100));
+		obs.add(new Obstacle(lane, 1,-100,100,100, 10));
 		
 
 	}
 	
 	public void addCoin(int lane){
-			Coin newCoin = new Coin(lane, 0,0,100,100);
+			coins.add(new Coin(lane, 0,-100,100,100, 10));
 	}
 	
 	public void update() {
@@ -53,6 +55,8 @@ public class ObjectManager implements ActionListener{
 		for(Coin coin: coins) {
 			coin.draw(g);
 		}
+
+		
 	}
 	
 	public void purgeObjects() {
@@ -77,20 +81,33 @@ public class ObjectManager implements ActionListener{
 		}
 		for(Coin coin: coins) {
 			if(coin.collisionBox.intersects(car.collisionBox)) {
+				score++;
 				coin.isActive = false;
-				System.out.println("Collides");
+			}
+			for(Obstacle ob: obs) {
+				if(coin.collisionBox.intersects(ob.collisionBox)) {
+					coin.isActive = false;
+				}
 			}
 		}
+	}
+	
+	int getScore() {
+		return score;
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
+
+		
+		int randomNum3 = rand.nextInt(3);
+		if(randomNum3 == 0 || randomNum3 ==1) {
 		randomNum = rand.nextInt(3);
 		addObstacle(randomNum);
+		}
+		else {
 		randomNum2 = rand2.nextInt(3);
-		if(randomNum != randomNum2) {
-			System.out.println("creating coin");
 		addCoin(randomNum2);
 		}
 	}

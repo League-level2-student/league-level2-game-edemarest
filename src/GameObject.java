@@ -6,11 +6,11 @@ public class GameObject {
 	 int y;
 	 int width;
 	 int height;
-	 int speed = 0;
+	 int speed;
 	 boolean isActive = true;
 	 Rectangle collisionBox;
 	 
-	 public GameObject(int lane, int x, int y, int width, int height) {
+	 public GameObject(int lane, int x, int y, int width, int height, int speed) {
 		 this.lane = lane;
 		 this.x = x;
 		 this.y = y;

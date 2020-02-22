@@ -8,8 +8,8 @@ public class Obstacle extends GameObject{
 	int rand = new Random().nextInt(3);
 	
 	
-	public Obstacle(int lane, int x, int y, int width, int height) {
-		super(lane, x, y, width, height);
+	public Obstacle(int lane, int x, int y, int width, int height, int speed) {
+		super(lane, x, y, width, height, speed);
 		// TODO Auto-generated constructor stub
 		y = -100;
 	}
@@ -20,15 +20,17 @@ public class Obstacle extends GameObject{
 	}
 	
 	public void draw(Graphics g) {
-        g.setColor(Color.RED);
         if(lane == 2) {
         	x = 840;
+        	g.setColor(Color.ORANGE);
         }
         else if(lane == 1) {
         	x = 540;
+        	g.setColor(Color.RED);
         }
         else {
         	x = 200;
+        	g.setColor(Color.PINK);
         }
         g.fillRect(x, y, width, height);
         //g.setColor(Color.BLACK);

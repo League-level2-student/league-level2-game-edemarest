@@ -5,8 +5,8 @@ public class Car extends GameObject{
 
 	int skin; 
 	
-	public Car(int lane, int x, int y, int width, int height, int skin) {
-		super(lane, x, y, width, height);
+	public Car(int lane, int x, int y, int width, int height, int skin, int speed) {
+		super(lane, x, y, width, height, speed);
 		this.skin = skin;
 		// TODO Auto-generated constructor stub
 	}
