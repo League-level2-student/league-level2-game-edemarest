@@ -1,5 +1,6 @@
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 import java.util.Random;
 
 public class Coin extends GameObject{
@@ -17,7 +18,7 @@ public class Coin extends GameObject{
 		super.update();
 	}
 	
-	public void draw(Graphics g) {
+	public void draw(Graphics g, BufferedImage coin) {
         g.setColor(Color.YELLOW);
         if(lane == 2) {
         	x = 840;
@@ -30,7 +31,7 @@ public class Coin extends GameObject{
         }
         //g.drawRect(x,  y,  width,  height);
 		g.setColor(Color.YELLOW);
-		g.fillRect(collisionBox.x, collisionBox.y, width, height);
+		g.drawImage(coin, x, y, width, height, null);
 	}
 	
 	

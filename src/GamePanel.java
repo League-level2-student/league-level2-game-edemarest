@@ -15,13 +15,14 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	
 	Timer frameDraw;
 	Timer obSpawn;
-	Timer coinSpawn;
+	//Timer coinSpawn;
 	
 	private BufferedImage background;
 	private BufferedImage startScreen;
 	public static BufferedImage image;	
 	private int backgroundHeight = 0; //You need this if you are scrolling up-down
 	BufferedImage selectionScreen;
+	BufferedImage endScreen;
 	BufferedImage start1;
 	BufferedImage start2;
 	BufferedImage start3;
@@ -32,6 +33,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	int y1 = 7200-HEIGHT;
 	int y2 = 7200;
 	static Font titleFont;
+	static Font titleFont2;
 	//Game state variables
     final int START = 0;
     final int GAME = 1;
@@ -48,15 +50,19 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	
 	public GamePanel(int frameWidth, int frameHeight) {
 
-		frameDraw = new Timer(1000/60,this);
+		frameDraw = new Timer(900/60,this);
 	    frameDraw.start();
-    	titleFont = new Font("Arial", Font.PLAIN, 50);
+
+    	titleFont = new Font("Arial", Font.BOLD, 50);
+    	titleFont2 = new Font("Arial", Font.BOLD, 100);
 
 	        startScreen = loadImage ("Start Screen.png");
 	    
 	        start1 = loadImage ("Start1.png");
 	        start2 = loadImage ("Start2.png");
 	        start3 = loadImage ("Start3.png");
+	        
+	        endScreen = loadImage ("End Screen.png");
 	    
 	    
 		
@@ -83,6 +89,28 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		manager.update();
 		if(!car.isActive) {
 			currentState = END;
+		}
+
+		 if(manager.getScore()>35) {
+			frameDraw.setDelay(450/60);
+		}
+		else if(manager.getScore()>30) {
+			frameDraw.setDelay(500/60);
+		}
+		else if(manager.getScore()>25) {
+			frameDraw.setDelay(550/60);
+		}
+		else if(manager.getScore()>20) {
+			frameDraw.setDelay(600/60);
+		}
+		else if(manager.getScore()>15) {
+			frameDraw.setDelay(650/60);
+		}
+		else if(manager.getScore()>10) {
+			frameDraw.setDelay(700/60);
+		}
+		else if(manager.getScore()>5) {
+			frameDraw.setDelay(800/60);
 		}
 		
 	}
@@ -121,8 +149,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	}
 	
 	void drawEndState(Graphics g)  {
-		g.setColor(Color.RED);
-		g.fillRect(0, 0, GameRunner.WIDTH, GameRunner.HEIGHT);
+		g.drawImage(endScreen,0, 0, 1200, 800, null);
+    	g.setColor(Color.RED);
+    	g.setFont(titleFont2);
+		g.drawString("Score: "+manager.getScore(), 400, 400);
 	}
 
 	//Paint component
@@ -158,11 +188,13 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	
 	
 	void startGame() {
-		obSpawn = new Timer(2500, manager);
+		obSpawn = new Timer(1000, manager);
 		obSpawn.start();
+		manager.score = 0;
+		car.isActive = true;
 		
-		coinSpawn = new Timer(1250 , manager);
-		coinSpawn.start();
+		//coinSpawn = new Timer(1250 , manager);
+		//coinSpawn.start();
 	}
 	
 
@@ -177,6 +209,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		}else if(currentState == END){
 		    updateEndState();
 		}
+		repaint();
 	}
 
 
@@ -224,15 +257,13 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 				currentState = GAME;
 				startGame();
 			}
-			else if(currentState == GAME) {
-				currentState = END;
-				obSpawn.stop();
-				repaint();
-			}
-			else if (currentState == END) {
-				currentState = START;
-				repaint();
-		    } 
+		}
+		else if(e.getKeyCode()==KeyEvent.VK_M) {
+			 if (currentState == END) {
+			currentState = START;
+			manager = new ObjectManager(car);
+			car = new Car(0, 500, 500, 200, 400, carSkin, 10);
+	    } 
 		}
 		
 		//LEFT and RIGHT controls
