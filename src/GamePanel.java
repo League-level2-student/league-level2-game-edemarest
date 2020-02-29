@@ -8,6 +8,7 @@ import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 
 import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -34,6 +35,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	int y2 = 7200;
 	static Font titleFont;
 	static Font titleFont2;
+	static Font titleFont3;
 	//Game state variables
     final int START = 0;
     final int GAME = 1;
@@ -55,6 +57,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 
     	titleFont = new Font("Arial", Font.BOLD, 50);
     	titleFont2 = new Font("Arial", Font.BOLD, 100);
+    	titleFont3 = new Font("Arial", Font.BOLD, 25);
 
 	        startScreen = loadImage ("Start Screen.png");
 	    
@@ -92,25 +95,25 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		}
 
 		 if(manager.getScore()>35) {
-			frameDraw.setDelay(450/60);
+			frameDraw.setDelay(300/60);
 		}
 		else if(manager.getScore()>30) {
-			frameDraw.setDelay(500/60);
+			frameDraw.setDelay(320/60);
 		}
 		else if(manager.getScore()>25) {
-			frameDraw.setDelay(550/60);
+			frameDraw.setDelay(350/60);
 		}
 		else if(manager.getScore()>20) {
-			frameDraw.setDelay(600/60);
+			frameDraw.setDelay(400/60);
 		}
 		else if(manager.getScore()>15) {
-			frameDraw.setDelay(650/60);
+			frameDraw.setDelay(500/60);
 		}
 		else if(manager.getScore()>10) {
-			frameDraw.setDelay(700/60);
+			frameDraw.setDelay(600/60);
 		}
 		else if(manager.getScore()>5) {
-			frameDraw.setDelay(800/60);
+			frameDraw.setDelay(700/60);
 		}
 		
 	}
@@ -133,6 +136,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		else {
 			g.drawImage(startScreen,0, 0, 1200, 800, null);
 		}
+		g.setColor(Color.WHITE);
+    	g.setFont(titleFont3);
+		g.drawString("*Press I for instructions*", 850, 25);
 	}
 	
 	void drawGameState(Graphics g) {
@@ -248,7 +254,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 				}
 			}
 
-		
+	if(e.getKeyCode()==KeyEvent.VK_I) {
+		JOptionPane.showMessageDialog(null, "1) Select a car \n 2) Press S to start \n3) Move between the three lanes to \navoid the obstacles (Cones, puddles, and lollipops) \n4) Collect as many coins as you can before crashing!");
+	}
 		
 		//ENTER control
 		if(e.getKeyCode()==KeyEvent.VK_S) {
